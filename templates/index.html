@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바른 자세 교정 서비스</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1><span class="highlight">바른 자세 교정 서비스</span></h1>
+        <p class="subtitle">당신의 척추 건강을 지켜드립니다!</p>
+
+        <div class="instructions">
+            <h2>사용법</h2>
+            <ul>
+                <li>1. 캠을 상반신이 잘 보이도록 조정한다.</li>
+                <li>2. 턱을 당기고 어깨를 펴고 캡처 버튼을 누른다.</li>
+                <li>3. 그 자세를 유지하도록 알림을 드리겠습니다.</li>
+            </ul>
+        </div>
+
+        <div class="video-container">
+            <div class="video-wrapper">
+                <img id="video" src="{{ url_for('video_feed') }}" alt="Video Feed">
+            </div>
+        </div>
+        <button id="capture-button" class="btn">캡처</button>
+        <button id="recapture-button" class="btn" style="display: none;">다시 캡처 하기</button>
+        <div class="posture-status">
+            <p id="status-text">Initializing...</p>
+        </div>
+        <div class="footer">
+            <p>© 2024 국민대학교 멋쟁이사자처럼 팀 ETC. All rights reserved.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('capture-button').addEventListener('click', function() {
+            fetch('/capture', { method: 'POST' }).then(function(response) {
+                if (response.ok) {
+                    document.getElementById('status-text').innerText = '자세가 캡처되었습니다!';
+                    document.getElementById('capture-button').style.display = 'none';
+                    document.getElementById('recapture-button').style.display = 'inline-block';
+                }
+            });
+        });
+
+        document.getElementById('recapture-button').addEventListener('click', function() {
+            fetch('/capture', { method: 'POST' }).then(function(response) {
+                if (response.ok) {
+                    document.getElementById('status-text').innerText = '자세가 다시 캡처되었습니다!';
+                }
+            });
+        });
+
+        let alertActive = false;
+
+        function showAlert() {
+            alertActive = true;
+            alert('바른 자세를 해주세요!');
+            setTimeout(() => {
+                alertActive = false;
+                checkPosture(); // 다시 상태 확인 시작
+            }, 10000);  // 10초 후에 다시 상태를 확인
+        }
+
+        function checkPosture() {
+            if (alertActive) {
+                return;
+            }
+
+            fetch('/posture_status')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('status-text').innerText = data.status;
+                    if (data.alert && !alertActive) {
+                        showAlert();
+                    }
+                });
+        }
+
+        setInterval(checkPosture, 1000);  // 1초마다 상태를 확인합니다
+    </script>
+</body>
+</html>
