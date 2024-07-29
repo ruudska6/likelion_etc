@@ -36,6 +36,13 @@
     </div>
 
     <script>
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            if (Notification.permission !== 'granted') {
+                Notification.requestPermission();
+            }
+        });
+
         document.getElementById('capture-button').addEventListener('click', function() {
             fetch('/capture', { method: 'POST' }).then(function(response) {
                 if (response.ok) {
@@ -57,8 +64,14 @@
         let alertActive = false;
 
         function showAlert() {
+            if (Notification.permission === 'granted'){
+                new Notification('자세 교정 알림',{
+                    body: '바른 자세를 해주세요!'
+                });
+            } else{
+                alert('바른 자세를 해주세요!');
+            }
             alertActive = true;
-            alert('바른 자세를 해주세요!');
             setTimeout(() => {
                 alertActive = false;
                 checkPosture(); // 다시 상태 확인 시작
