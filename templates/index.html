@@ -33,15 +33,22 @@
         <div class="footer">
             <p>© 2024 국민대학교 멋쟁이사자처럼 팀 ETC. All rights reserved.</p>
         </div>
+
+         <!-- 오디오 요소 추가 
+        <audio id="notification-sound" src="(소리 따로 경로 추가해서 만들어야하는데 어떤 걸 쓸지 미정)" preload="auto"></audio>
+            -->
     </div>
 
     <script>
+
+        //다른 탭에 있더라도 알림 뜨게 추가
 
         document.addEventListener('DOMContentLoaded', (event) => {
             if (Notification.permission !== 'granted') {
                 Notification.requestPermission();
             }
         });
+        //
 
         document.getElementById('capture-button').addEventListener('click', function() {
             fetch('/capture', { method: 'POST' }).then(function(response) {
@@ -63,14 +70,30 @@
 
         let alertActive = false;
 
+        //소리 재생함수 추가
+        function playNotificationSound() {
+            const sound = document.getElementById('notification-sound');
+            if (sound) {
+                sound.play();
+            }
+        }
+        //
+
         function showAlert() {
             if (Notification.permission === 'granted'){
                 new Notification('자세 교정 알림',{
                     body: '바른 자세를 해주세요!'
+                    //아이콘 설정할 수 있는데 일단 빼놓았습니다
+                    // icon : 경로
                 });
             } else{
                 alert('바른 자세를 해주세요!');
             }
+
+            //소리 재생
+            //playNotificationSound();
+            //일단 주석처리 (소리 경로를 미정했으므로)
+
             alertActive = true;
             setTimeout(() => {
                 alertActive = false;
