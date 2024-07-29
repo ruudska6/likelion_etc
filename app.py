@@ -21,7 +21,7 @@ pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
 captured_landmarks = None
 
 bad_posture_start_time = None
-POSTURE_THRESHOLD_TIME = 5  # 5 seconds
+POSTURE_THRESHOLD_TIME = 2  # (수정 전 :5 seconds )==>(수정 후: 2초로 줄여서 팝업이 뜨는데 걸리는 시간 줄임)
 
 def capture_landmarks():
     global captured_landmarks
@@ -83,7 +83,7 @@ def generate_frames():
 
             image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-            good_posture = False
+            
             if results.pose_landmarks:
                 draw_points(image, results.pose_landmarks.landmark)
 
@@ -94,9 +94,11 @@ def generate_frames():
                 else:
                     if bad_posture_start_time is None:
                         bad_posture_start_time = time.time()
-                    elif time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
-                        # 이미 알람이 울렸음을 확인할 수 있도록 상태를 유지
-                        bad_posture_start_time = time.time()
+#                    elif time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
+#                        # 이미 알람이 울렸음을 확인할 수 있도록 상태를 유지
+#                        bad_posture_start_time = time.time()
+#이게 bad_posture_start_time과 현재를 비교해서 5초 넘어가면 팝업이 떠야하는데 bad_p~~를 다시 현재시간으로 
+# 재설정해줘서 5초가 지나도 그 시점을 기준으로 다시 5초를 기다리고 이런식으로 순환되서 팝업이 안뜨는 거 같아요 
 
             ret, buffer = cv2.imencode('.jpg', image)
             frame = buffer.tobytes()
@@ -123,7 +125,8 @@ def posture_status():
     global bad_posture_start_time
     if bad_posture_start_time is None:
         return jsonify(status="바른 자세입니다", alert=False)
-    elif time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
+    
+    if time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:#elif로 쓸필요 없어서 if로 변환했습니다
         return jsonify(status="나쁜 자세입니다", alert=True)
     else:
         return jsonify(status="나쁜 자세입니다", alert=False)
