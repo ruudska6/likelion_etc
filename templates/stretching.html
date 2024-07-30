@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>바른 자세 교정 서비스</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1><span class="highlight">바른 자세 교정 서비스</span></h1>
+        <nav>
+            <ul>
+                <li><a href="{{ url_for('index') }}">자세 교정</a></li>
+                <li><a href="{{ url_for('equipment') }}">장비 추천</a></li>
+                <li><a href="{{ url_for('stretching') }}">스트레칭</a></li>
+            </ul>
+        </nav>
+        <p class="subtitle">건강한 자세 유지를 위한 스트레칭 영상을 확인하세요.</p>
+
+        <div class="video-container video-container-stretching">
+            <iframe class="responsive-iframe" src="https://www.youtube.com/embed/CbUciuVHmHc" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 국민대학교 멋쟁이사자처럼 팀 ETC. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

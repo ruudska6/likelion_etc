@@ -1,0 +1,201 @@
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: #f0f4f8;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+    box-sizing: border-box;
+    padding-top: 50px;  /* 상단 마진 추가 */
+}
+
+.container {
+    text-align: center;
+    background: #fff;
+    padding: 30px 50px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 45px; /* 글씨 크기 키움 */
+    margin-bottom: 20px;
+    font-weight: 300;
+    color: #2c3e50;
+    word-wrap: break-word; /* 단어가 길 경우 줄바꿈 */
+}
+
+nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    background-color: #3498db;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+}
+
+nav ul li {
+    flex: 1;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    padding: 15px 0;
+    display: block;
+    text-align: center;
+}
+
+nav ul li a:hover {
+    background-color: #2980b9;
+    border-radius: 8px;
+}
+
+.highlight {
+    background-color: #ADD8E6;
+    padding: 0 15px;
+    border-radius: 5px;
+}
+
+.subtitle {
+    color: #7f8c8d;
+    font-size: 22px;
+    margin-bottom: 20px;
+    font-weight: 300;
+}
+
+.instructions, .recommendations {
+    text-align: left;
+    margin: 20px auto;
+    width: 100%;
+    max-width: 800px;
+    box-sizing: border-box;
+}
+
+.instructions h2, .recommendations h2 {
+    color: #34495e;
+    font-size: 26px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+.instructions ul, .recommendations ul {
+    padding: 0;
+    list-style-type: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.instructions ul li, .recommendations ul li {
+    background: #ecf0f1;
+    margin: 10px 0;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 18px;
+}
+
+.instructions ul li h3, .recommendations ul li h3 {
+    margin: 0 0 10px;
+}
+
+.buy-link {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #3498db;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+}
+
+.buy-link:hover {
+    background-color: #2980b9;
+}
+
+.video-container {
+    margin: 20px auto;
+    border: 2px solid #bdc3c7;
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 800px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.video-container-posture .video-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ecf0f1;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    position: relative;
+}
+
+#video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.video-container-stretching .responsive-iframe {
+    width: 100%;
+    height: 450px; /* 동영상 높이 조정 */
+}
+
+.btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.btn:disabled {
+    background-color: #95a5a6;
+    cursor: not-allowed;
+}
+
+.btn:hover:enabled {
+    background-color: #2980b9;
+}
+
+.footer {
+    margin-top: 20px;
+    font-size: 16px;
+    color: #7f8c8d;
+}
+
+.timer {
+    margin-top: 20px;
+    font-size: 30px;
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.status-text {
+    font-size: 24px; /* 글씨 크기 키움 */
+    margin-top: 20px; /* 마진 추가 */
+}
