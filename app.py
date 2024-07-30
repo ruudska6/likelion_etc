@@ -100,7 +100,7 @@ def generate_frames():
                     if bad_posture_start_time is None:
                         bad_posture_start_time = time.time()
                     elif time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
-                        bad_posture_start_time = time.time()
+                        #bad_posture_start_time = time.time()
                         good_posture_start_time = None
 
             ret, buffer = cv2.imencode('.jpg', image)
