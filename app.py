@@ -99,8 +99,8 @@ def generate_frames():
                 else:
                     if bad_posture_start_time is None:
                         bad_posture_start_time = time.time()
-                    elif time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
-                        #bad_posture_start_time = time.time() 이 코드 있으면 5초 시간 세는게 개속 리셋되서 안되는 것 같습니다
+                    if time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
+                        #bad_posture_start_time = time.time()
                         good_posture_start_time = None
 
             ret, buffer = cv2.imencode('.jpg', image)
@@ -109,7 +109,11 @@ def generate_frames():
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
-@app.route('/')
+@app.route('/mainpage')
+def mainpage():
+    return render_template('mainpage.html')
+
+@app.route("/")
 def index():
     return render_template('index.html')
 
