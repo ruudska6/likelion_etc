@@ -245,6 +245,13 @@ nav ul li a:hover {
     width: 100%;
 }
 
+.bareun-big {
+    width: 50px; /* 배너 너비에 맞게 이미지 크기 조정 */
+    
+    height: auto; /* 비율을 유지하면서 높이 자동 조정 */
+    border-radius: 8px; /* 선택적으로 둥글게 처리 */
+}
+
 .banner nav ul li{
     flex: 1;
 }
