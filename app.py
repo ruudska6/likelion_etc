@@ -152,5 +152,6 @@ def posture_status():
         return jsonify(status="나쁜 자세입니다", alert=False)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+
 
