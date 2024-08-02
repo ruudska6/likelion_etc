@@ -9,7 +9,7 @@ body {
     min-height: 100vh;
     color: #333;
     box-sizing: border-box;
-    padding-top: 50px;  /* 상단 마진 추가 */
+    padding-top: 180px;  /* 상단 마진 추가 */
 }
 
 .container {
@@ -198,4 +198,87 @@ nav ul li a:hover {
 .status-text {
     font-size: 24px; /* 글씨 크기 키움 */
     margin-top: 20px; /* 마진 추가 */
+}
+
+.section {
+
+}
+
+.banner{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: white;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    z-index: 1000;
+    transition: background 0.3 ease;
+}
+
+.banner.scrolled{
+    background: rgba(255, 255, 255, 0.7);
+}
+
+.banner h1 {
+    margin:10px;
+    font-size: 24px;
+    color: black; 
+    text-align: center;
+}
+
+
+.banner nav ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+}
+
+.banner nav ul li{
+    flex: 1;
+}
+.banner nav ul li a{
+    text-decoration: none;
+    color: #fff;
+    font-size: 20px;
+    padding: 20px 0;
+    display: block;
+    text-align: center;
+    width: 250px;
+    
+}
+
+.banner nav ul li a:hover {
+    background-color: #2980b9;
+    border-radius: 8px;
+}
+
+.banner .subtitle{
+    font-size: 16px;
+    margin: 8px 0 0 0;
+    color: black;
+    text-align: center;
+}
+
+.highlight{
+    color: yellow;
+}
+.banner-close{
+    font-size: 20px;
+    cursor: pointer;
+}
+.content{
+    padding: 20px;
+    margin-top: 60px;
 }

@@ -7,7 +7,8 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div class="container">
+    
+        <div class="banner" id="banner">
             <h1><span class="highlight">바른 자세 교정 서비스</span></h1>
                 <nav>
                     <ul>
@@ -17,7 +18,8 @@
                     </ul>
                 </nav>
                 <p class="subtitle">당신의 척추 건강을 지켜드립니다!</p>
-
+        </div>
+    <div class="container">
         <div class="instructions">
             <h2>사용법</h2>
             <ul>
@@ -47,6 +49,17 @@
     </div>
 
     <script>
+
+
+        window.addEventListener('scroll', function() {
+            const banner = document.getElementById('banner');
+            if (window.scrollY > 0) {
+                banner.classList.add('scrolled');
+            } else {
+                banner.classList.remove('scrolled');
+            }
+        });
+
         document.getElementById('capture-button').addEventListener('click', function() {
             fetch('/capture', { method: 'POST' }).then(function(response) {
                 if (response.ok) {
