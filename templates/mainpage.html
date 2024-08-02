@@ -44,8 +44,8 @@
         <div class="footer">
             <p>© 2024 국민대학교 멋쟁이사자처럼 팀 ETC. All rights reserved.</p>
         </div>
-        
-        
+        <audio id="alert-sound" src="{{ url_for('static', filename='alert-sound.mp3') }}" preload="auto"></audio>
+
     </div>
 
     <script>
@@ -82,6 +82,7 @@
 
         function showAlert() {
             alertActive = true;
+            document.getElementById('alert-sound').play(); // 오디오 재생
             alert('바른 자세를 해주세요!');
             setTimeout(() => {
                 alertActive = false;
