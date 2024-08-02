@@ -13,6 +13,7 @@ body {
 }
 
 .container {
+    
     text-align: center;
     background: #fff;
     padding: 30px 50px;
@@ -201,7 +202,20 @@ nav ul li a:hover {
 }
 
 .section {
-
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    padding: 50px 20px; /* 섹션 내부 여백 */
+    text-align: center;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    max-width: 1600px;
+    width: 100%;
+    max-height: 300px;
+    box-sizing: border-box;
+    margin: 50px auto;
 }
 
 .banner{
@@ -247,7 +261,6 @@ nav ul li a:hover {
 
 .bareun-big {
     width: 50px; /* 배너 너비에 맞게 이미지 크기 조정 */
-    
     height: auto; /* 비율을 유지하면서 높이 자동 조정 */
     border-radius: 8px; /* 선택적으로 둥글게 처리 */
 }
