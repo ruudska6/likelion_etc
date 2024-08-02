@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>바른 자세 교정 서비스</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+
 </head>
 <body>
+
+    <div class="popup" id="popup">
+        <p>바른 자세를 해주세요!</p>
+        <span class="close" id="popup-close">&times;</span>
+    </div>
     
         <div class="banner" id="banner">
             <h1><span class="highlight">바른 자세 교정 서비스</span></h1>
@@ -81,9 +88,19 @@
         let alertActive = false;
 
         function showAlert() {
+            //소리 재생
+            const alertSound = document.getElementById('alert-sound');
+            const popup = document.getElementById('popup');
+            
+            alertSound.play();
+
+            popup.classList.add('show');
+
+            document.getElementById('popup-close').addEventListener('click',function(){
+                popup.classList.remove('show');
+            })
+
             alertActive = true;
-            document.getElementById('alert-sound').play(); // 오디오 재생
-            alert('바른 자세를 해주세요!');
             setTimeout(() => {
                 alertActive = false;
                 checkPosture(); // 다시 상태 확인 시작

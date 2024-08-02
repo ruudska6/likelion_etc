@@ -282,3 +282,28 @@ nav ul li a:hover {
     padding: 20px;
     margin-top: 60px;
 }
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    color: black;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.popup.show {
+    display: block;
+}
+
+.popup .close {
+    display: inline-block;
+    margin-left: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
