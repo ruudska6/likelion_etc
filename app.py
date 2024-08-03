@@ -1,4 +1,5 @@
 from flask import Flask, render_template, Response, request, jsonify
+from flask_cors import CORS
 import cv2
 import mediapipe as mp
 import os
@@ -10,8 +11,17 @@ import absl.logging
 absl.logging.set_verbosity(absl.logging.ERROR)
 
 app = Flask(__name__)
+CORS(app)
 
-camera = cv2.VideoCapture(0)
+# Initialize the camera
+def initialize_camera():
+    camera = cv2.VideoCapture(0)
+    if not camera.isOpened():
+        print("Error: Could not open camera.")
+        return None
+    return camera
+
+camera = initialize_camera()
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
@@ -25,6 +35,9 @@ POSTURE_THRESHOLD_TIME = 5  # 5 seconds
 
 def capture_landmarks():
     global captured_landmarks
+    if camera is None:
+        print("Error: Camera is not initialized.")
+        return
     success, frame = camera.read()
     if success:
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -73,6 +86,9 @@ def draw_points(image, landmarks):
 
 def generate_frames():
     global bad_posture_start_time, good_posture_start_time
+    if camera is None:
+        print("Error: Camera is not initialized.")
+        return
     while True:
         success, frame = camera.read()
         if not success:
@@ -100,7 +116,6 @@ def generate_frames():
                     if bad_posture_start_time is None:
                         bad_posture_start_time = time.time()
                     if time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
-                        #bad_posture_start_time = time.time()
                         good_posture_start_time = None
 
             ret, buffer = cv2.imencode('.jpg', image)
@@ -153,5 +168,3 @@ def posture_status():
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
-
-
