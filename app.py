@@ -13,11 +13,12 @@ absl.logging.set_verbosity(absl.logging.ERROR)
 app = Flask(__name__)
 CORS(app)
 
-# Initialize the camera
+# Initialize the camera (simulated with a video file)
 def initialize_camera():
-    camera = cv2.VideoCapture(0)
+    video_source = os.getenv('VIDEO_SOURCE', 'static/sample.mp4')  # 환경 변수 또는 기본 동영상 파일 경로 사용
+    camera = cv2.VideoCapture(video_source)
     if not camera.isOpened():
-        print("Error: Could not open camera.")
+        print(f"Error: Could not open video source {video_source}.")
         return None
     return camera
 
@@ -92,37 +93,39 @@ def generate_frames():
     while True:
         success, frame = camera.read()
         if not success:
-            break
-        else:
-            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            results = pose.process(image)
+            camera.set(cv2.CAP_PROP_POS_FRAMES, 0)  # Loop the video by resetting to the first frame
+            success, frame = camera.read()
+            if not success:
+                break
+        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+        results = pose.process(image)
 
-            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-            good_posture = False
-            if results.pose_landmarks:
-                draw_points(image, results.pose_landmarks.landmark)
+        good_posture = False
+        if results.pose_landmarks:
+            draw_points(image, results.pose_landmarks.landmark)
 
-                good_posture = is_good_posture(results.pose_landmarks.landmark, captured_landmarks)
+            good_posture = is_good_posture(results.pose_landmarks.landmark, captured_landmarks)
 
-                if good_posture:
-                    if bad_posture_start_time is None:
-                        if good_posture_start_time is None:
-                            good_posture_start_time = time.time()
-                    else:
-                        bad_posture_start_time = None
+            if good_posture:
+                if bad_posture_start_time is None:
+                    if good_posture_start_time is None:
                         good_posture_start_time = time.time()
                 else:
-                    if bad_posture_start_time is None:
-                        bad_posture_start_time = time.time()
-                    if time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
-                        good_posture_start_time = None
+                    bad_posture_start_time = None
+                    good_posture_start_time = time.time()
+            else:
+                if bad_posture_start_time is None:
+                    bad_posture_start_time = time.time()
+                if time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
+                    good_posture_start_time = None
 
-            ret, buffer = cv2.imencode('.jpg', image)
-            frame = buffer.tobytes()
+        ret, buffer = cv2.imencode('.jpg', image)
+        frame = buffer.tobytes()
 
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 @app.route('/mainpage')
 def mainpage():
