@@ -7,11 +7,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
     <style>
         body {
+<<<<<<< HEAD
             margin-top: 125px; 
+=======
+            margin-top: 150px;
+>>>>>>> 94b113cb627a7216c61c5242afc1fc237063c387
         }
     </style>
 </head>
 <body>
+<<<<<<< HEAD
     <div class="banner" id="banner">
             
    
@@ -36,11 +41,33 @@
     </div>
 </div>
 
+=======
+    <div class="popup" id="popup">
+        <p>바른 자세를 해주세요!</p>
+        <span class="close" id="popup-close">확인</span>
+    </div>
+    <div class="banner" id="banner">
+        <img src="{{ url_for('static', filename='bareun-big.png') }}" class="bareun-big" alt="Banner Image">
+        <div class="text-container">
+            <p class="main-title">자세 서비스</p>
+            <p class="subtitle">당신의 척추 건강을 지켜드립니다!</p>
+        </div>
+        <div class="nav-subtitle">
+            <nav>
+                <ul>
+                    <li><a href="{{ url_for('index') }}">자세 교정</a></li>
+                    <li><a href="{{ url_for('equipment') }}">장비 추천</a></li>
+                    <li><a href="{{ url_for('stretching') }}">스트레칭</a></li>
+                    <img src="{{ url_for('static', filename='desk.png') }}" class="desk" alt="Banner Image">
+                </ul>
+            </nav>
+        </div>
+    </div>
+>>>>>>> 94b113cb627a7216c61c5242afc1fc237063c387
     <div class="container">
         <p class="subtitle">자세 교정을 위한 추천 장비 목록입니다.</p>
-
         <div class="recommendations">
-            <h2>''추천 장비''</h2>
+            <h2>추천 장비</h2>
             <ul>
                 <li>
                     <h3>키보드 팜레스트</h3>
@@ -64,10 +91,23 @@
                 </li>
             </ul>
         </div>
-
         <div class="footer">
             <p>© 2024 국민대학교 멋쟁이사자처럼 팀 ETC. All rights reserved.</p>
         </div>
     </div>
+    <script>
+        window.addEventListener('scroll', function() {
+            const banner = document.getElementById('banner');
+            if (window.scrollY > 0) {
+                banner.classList.add('scrolled');
+            } else {
+                banner.classList.remove('scrolled');
+            }
+        });
+
+        document.getElementById('popup-close').addEventListener('click', function() {
+            document.getElementById('popup').classList.remove('show');
+        });
+    </script>
 </body>
 </html>

@@ -46,7 +46,7 @@ def is_good_posture(landmarks, captured_landmarks):
     neck_distance = abs(landmarks[neck_idx].x - captured_landmarks[neck_idx].x) + abs(landmarks[neck_idx].y - captured_landmarks[neck_idx].y)
     chin_distance = abs(landmarks[chin_idx].x - captured_landmarks[chin_idx].x) + abs(landmarks[chin_idx].y - captured_landmarks[chin_idx].y)
 
-    threshold = 0.1
+    threshold = 0.07  # 더 민감하게 조정
     return neck_distance < threshold and chin_distance < threshold
 
 def draw_points(image, landmarks):
@@ -149,12 +149,12 @@ def posture_status():
             minutes, seconds = divmod(good_posture_duration, 60)
             duration_str = f" {int(minutes)}분 {int(seconds)}초 째 바른 자세를 유지하고 있습니다."
         else:
-            duration_str = "바른 자세입니다"
+            duration_str = "좋습니다. 바른 자세입니다 😊"
         return jsonify(status=duration_str, alert=False)
     elif time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
-        return jsonify(status="나쁜 자세입니다", alert=True)
+        return jsonify(status="😱 바른 자세를 해주세요!", alert=True)
     else:
-        return jsonify(status="나쁜 자세입니다", alert=False)
+        return jsonify(status="😱 바른 자세를 해주세요!", alert=False)
 
 @app.route('/posture_data')
 def posture_data_route():
