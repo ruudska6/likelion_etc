@@ -5,17 +5,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>바른 자세 교정 서비스</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            margin-top: 125px; 
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <img src="{{ url_for('static', filename='bareun-big.png') }}" class="bareun-big">
-        <nav>
+    <div class="banner" id="banner">
+            
+   
+        <img src="{{ url_for('static', filename='bareun-big.png') }}" class="bareun-big" alt="Banner Image">
+       
+        <div class="text-container">
+        <p class="main-title">자세 서비스</p>
+        <p class="subtitle">당신의 척추 건강을 지켜드립니다!</p>
+        </div>
+
+        <div class="nav-subtitle"> 
+            
+        <nav>                
             <ul>
                 <li><a href="{{ url_for('index') }}">자세 교정</a></li>
                 <li><a href="{{ url_for('equipment') }}">장비 추천</a></li>
                 <li><a href="{{ url_for('stretching') }}">스트레칭</a></li>
+                <img src="{{ url_for('static', filename='desk.png') }}" class="desk" alt="Banner Image">
             </ul>
         </nav>
+
+    </div>
+</div>
+
+    <div class="container">
         <p class="subtitle">자세 교정을 위한 추천 장비 목록입니다.</p>
 
         <div class="recommendations">
