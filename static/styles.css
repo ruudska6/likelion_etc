@@ -34,15 +34,16 @@ h1 {
 nav ul {
     list-style-type: none;
     padding: 0;
-    margin: 20px 0;
+    margin: 10px 0;
     display: flex;
     justify-content: center;
-    background-color: #3498db;
+    /*background-color: #3498db;*/
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    
     width: 100%;
     max-width: 800px;
     box-sizing: border-box;
+    color: #000;
 }
 
 nav ul li {
@@ -51,7 +52,7 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: #fff;
+    color: #000;
     font-size: 20px;
     padding: 15px 0;
     display: block;
@@ -59,7 +60,7 @@ nav ul li a {
 }
 
 nav ul li a:hover {
-    background-color: #2980b9;
+    /*background-color: #2980b9;*/
     border-radius: 8px;
 }
 
@@ -72,8 +73,9 @@ nav ul li a:hover {
 .subtitle {
     color: #7f8c8d;
     font-size: 22px;
-    margin-bottom: 20px;
+    margin-bottom: 50px;
     font-weight: 300;
+    text-align: left;
 }
 
 .instructions, .recommendations {
@@ -186,6 +188,7 @@ nav ul li a:hover {
     margin-top: 20px;
     font-size: 16px;
     color: #7f8c8d;
+    
 }
 
 .timer {
@@ -212,31 +215,40 @@ nav ul li a:hover {
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     max-width: 1600px;
     width: 100%;
+    min-height: auto;
     box-sizing: border-box;
 }
 
 .section {
     padding: 100px 20px; /* 섹션 내부 여백 */
     text-align: center;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     max-width: 1400px;
     width: 100%;
     margin: 100px auto;
 }
-
+.text-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    margin-left: 10px;
+}
+.main-title{
+    font-size: 24px;
+    font-weight: 900;
+    color: #000;
+}
 .banner{
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     background: white;
-    color: white;
+    color: black;
+    font-weight: 900;
+    font-size: 20px;
     padding: 15px 20px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -245,63 +257,103 @@ nav ul li a:hover {
 }
 
 .banner.scrolled{
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.3);
 }
 
-.banner h1 {
-    margin:10px;
-    font-size: 24px;
-    color: black; 
-    text-align: center;
+.bareun-big {
+    width: 80px; 
+    height: auto; 
+    border-radius: 8px; 
+    margin-left: 3%;
+    margin-right: 10px;
 }
 
+.desk {
+    width: 80px; 
+    height: auto; 
+    border-radius: 8px; 
+    align-self: flex-start;
+    margin-left: 0;
+    margin-top: -10px;
+}
+.nav-subtitle{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: 7%;
+    margin-left: auto;
+}
+@media (max-width: 1024px) {
+    .text-container {
+        display: none;
+    }
+    
+}
+
+
+.banner nav{
+    margin-left: auto;
+}
 
 .banner nav ul{
     list-style: none;
     padding: 0;
     margin: 0;
     display: flex;
-    justify-content: center;
     gap: 20px;
-    align-items: center;
-    width: 100%;
+    margin-top: 20px;
 }
 
-.bareun-big {
-    width: 50px; /* 배너 너비에 맞게 이미지 크기 조정 */
-    height: auto; /* 비율을 유지하면서 높이 자동 조정 */
-    border-radius: 8px; /* 선택적으로 둥글게 처리 */
+.banner .btn{
+
 }
 
 .banner nav ul li{
-    flex: 1;
+    flex: none;
 }
 .banner nav ul li a{
     text-decoration: none;
-    color: #fff;
-    font-size: 20px;
-    padding: 20px 0;
+    color: #000;
+    font-size: 23px;
+    padding: 10px 10px;
+    font-weight: 900;
     display: block;
     text-align: center;
-    width: 250px;
-    
+    background: rgba(255, 255, 255, 0);
+    position: relative;
+}
+
+.banner nav ul li a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 9px;
+    width: 0;
+    height: 10px;
+    background-color: #3da3e7a0;
+    transition: width 0.3s ease; 
+}
+
+
+.banner nav ul li a:hover::after {
+    width: 100%; 
 }
 
 .banner nav ul li a:hover {
-    background-color: #2980b9;
     border-radius: 8px;
 }
-
+.banner .main-title{
+    margin-top: 13px;
+}
 .banner .subtitle{
     font-size: 16px;
     margin: 8px 0 0 0;
     color: black;
     text-align: center;
+    margin-top: -20px;
+    margin-bottom: 20px;
 }
 
-.highlight{
-    color: yellow;
-}
 .banner-close{
     font-size: 20px;
     cursor: pointer;
