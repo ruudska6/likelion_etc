@@ -9,7 +9,12 @@
         body {
             margin-top: 125px; 
         }
+        canvas{
+            max-width: 100%;
+            height: auto;
+        }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 
@@ -62,6 +67,11 @@
         <button id="capture-button" class="btn">캡처</button>
         <button id="recapture-button" class="btn" style="display: none;">다시 캡처 하기</button>
         
+        <div>
+            <h2>자세 유지 시간 그래프</h2>
+            <canvas id="postureChart"></canvas>
+        </div>
+
         <div class="footer">
             <p>© 2024 국민대학교 멋쟁이사자처럼 팀 ETC. All rights reserved.</p>
         </div>
@@ -106,13 +116,18 @@
             const alertSound = document.getElementById('alert-sound');
             const popup = document.getElementById('popup');
             
-            alertSound.play();
+            if (document.readyState === 'complete'){
+                alertSound.play().catch(error => {
+                    console.log('소리 막힘:',error);
+                });
+            }
+
 
             popup.classList.add('show');
 
             document.getElementById('popup-close').addEventListener('click',function(){
                 popup.classList.remove('show');
-            })
+            });
 
             alertActive = true;
             setTimeout(() => {
@@ -136,10 +151,61 @@
                 });
         }
 
+       
+        function fetchPostureData() {
+            fetch('/posture_data')
+                .then(response => response.json())
+                .then(data => {
+                    updateChart(data);
+                });
+        }
+
+        let postureChart = null;
+
+        function updateChart(data) {
+            const ctx = document.getElementById('postureChart').getContext('2d');
+            
+            if (postureChart){
+                postureChart.destroy();
+            }
+            
+            postureChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: data.map((_, index) => index + 1),
+                    datasets: [{
+                        label: '바른 자세 유지 시간 (초)',
+                        data: data,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '횟수'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '시간 (초)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
         setInterval(checkPosture, 1000);  // 1초마다 상태를 확인합니다
         
-
-    
+        window.onload = function(){
+            fetchPostureData();
+            setInterval(fetchPostureData, 10000);
+        };
     </script>
 </body>
 </html>

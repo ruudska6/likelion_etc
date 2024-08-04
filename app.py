@@ -23,6 +23,8 @@ bad_posture_start_time = None
 good_posture_start_time = None
 POSTURE_THRESHOLD_TIME = 5  # 5 seconds
 
+posture_status_data = []
+
 def capture_landmarks():
     global captured_landmarks
     success, frame = camera.read()
@@ -72,7 +74,7 @@ def draw_points(image, landmarks):
         cv2.circle(image, (x, y), 5, (0, 255, 0), -1)
 
 def generate_frames():
-    global bad_posture_start_time, good_posture_start_time
+    global bad_posture_start_time, good_posture_start_time, posture_status_data
     while True:
         success, frame = camera.read()
         if not success:
@@ -100,7 +102,10 @@ def generate_frames():
                     if bad_posture_start_time is None:
                         bad_posture_start_time = time.time()
                     if time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
-                        #bad_posture_start_time = time.time()
+                        if good_posture_start_time is not None:
+                            good_posture_duration = time.time() - good_posture_start_time
+                            posture_status_data.append(good_posture_duration)
+                        # bad_posture_start_time = time.time()
                         good_posture_start_time = None
 
             ret, buffer = cv2.imencode('.jpg', image)
@@ -150,6 +155,11 @@ def posture_status():
         return jsonify(status="나쁜 자세입니다", alert=True)
     else:
         return jsonify(status="나쁜 자세입니다", alert=False)
+
+@app.route('/posture_data')
+def posture_data_route():
+    global posture_status_data
+    return jsonify(posture_status_data)
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000, debug=True)
