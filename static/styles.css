@@ -254,10 +254,13 @@ nav ul li a:hover {
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     z-index: 1000;
     transition: background 0.3 ease;
+    backdrop-filter: blur(4px);
 }
 
 .banner.scrolled{
     background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    
 }
 
 .bareun-big {
