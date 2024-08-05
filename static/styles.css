@@ -427,3 +427,34 @@ nav ul li a:hover {
     width: 100%;
     box-sizing: border-box;
 }
+
+
+.posting{
+    align-items: center;
+    justify-content: center;
+
+}
+.work{
+    width: 28%;
+    height: 30%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    
+}
+.t{
+    width: 10%;
+    height: 10%;
+    margin-bottom: 8%;
+    margin-left: 5px;
+}
+.bareun-big-index{
+    width: 20%;
+    height: 20%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    margin-bottom: 3.5%;
+    
+}
+.desk-index{
+    width: 28%;
+    height: 32%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
