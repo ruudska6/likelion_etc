@@ -488,3 +488,9 @@ nav ul li a:hover {
 .tech:hover {
     transform: scale(1.8);
 }
+.emoji{
+    width: 85%;
+    height: auto;
+    margin-left: 8%;
+    border-radius: 40%;
+}
