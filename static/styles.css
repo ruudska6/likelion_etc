@@ -23,6 +23,7 @@ body {
     box-sizing: border-box;
 }
 
+
 h1 {
     font-size: 45px; /* 글씨 크기 키움 */
     margin-bottom: 20px;
@@ -196,6 +197,7 @@ nav ul li a:hover {
     font-size: 16px;
     color: #7f8c8d;
     
+    
 }
 
 .timer {
@@ -206,8 +208,9 @@ nav ul li a:hover {
 }
 
 .status-text {
-    font-size: 24px; /* 글씨 크기 키움 */
+    font-size: 30px; /* 글씨 크기 키움 */
     margin-top: 20px; /* 마진 추가 */
+    margin-left: 10%;
 }
 
 #fullpage {
@@ -481,8 +484,8 @@ nav ul li a:hover {
     transform: scale(1.5);
 }
 .tech{
-    width: 200px;
-    height: 200px;
+    width: 30%;
+    height: 30%;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
     border-radius: 20%;
     transition: transform 0.5s ease-in-out;
@@ -505,6 +508,7 @@ nav ul li a:hover {
 .camcorder {
     display: flex;
     align-items: center;
+    margin-bottom: 10%;
 }
 
 .camcorder-body {

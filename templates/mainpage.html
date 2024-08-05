@@ -49,6 +49,11 @@
     
 <div class="container">
     </br>
+    
+    <div class="posture-status">
+        <p id="status-text" class="status-text">로딩 중 입니다..</p>
+    </div>
+    
     <div class="camcorder">
 
         <div class="camcorder-body">
@@ -76,23 +81,21 @@
         </div>
     </div>
 
-        <div class="posture-status">
-            <p id="status-text" class="status-text">로딩 중 입니다..</p>
-        </div>
+
 
 
         
-        
-            <h2>< 자세 유지 시간 그래프 ></h2>
-            <div class="grape">
+  
+    <h2>< 자세 유지 시간 그래프 ></h2>
+    <div class="grape">
 
-            <canvas id="postureChart"></canvas>
-            </div>
-        
+    <canvas id="postureChart"></canvas>
+    </div>
 
-        <div class="footer">
-            <p>© 2024 국민대학교 멋쟁이사자처럼 팀 ETC. All rights reserved.</p>
-        </div>
+
+    <div class="footer">
+        <p>© 2024 국민대학교 멋쟁이사자처럼 팀 ETC. All rights reserved.</p>
+    </div>
         <audio id="alert-sound" src="{{ url_for('static', filename='alert-sound.mp3') }}" preload="auto"></audio>
     
 </div>
