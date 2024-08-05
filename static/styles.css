@@ -430,9 +430,11 @@ nav ul li a:hover {
 
 
 .posting{
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-
+    justify-content: flex-start;
+    object-fit: cover;
 }
 .work{
     width: 28%;
