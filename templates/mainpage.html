@@ -25,7 +25,7 @@
     </div>
         <div class="banner" id="banner">
             
-   
+            
             <img src="{{ url_for('static', filename='bareun-big.png') }}" class="bareun-big" alt="Banner Image">
            
             <div class="text-container">
@@ -47,35 +47,55 @@
         </div>
     </div>
     
-    <div class="container">
-        
+<div class="container">
     </br>
+    <div class="camcorder">
+
+        <div class="camcorder-body">
+            <div class="lens">
+
+
+            </div>
+            <div class="record-button">
+
+            </div>
+            <div class="camcorder-capture-button">
+                <button id="capture-button" class="btn">캡처</button>
+                <button id="recapture-button" class="btn" style="display: none;">캡처</button>
+            </div>
+        </div>
+        <div class="connect">
+
+        </div>
+        <div class="screen">
+            <div class="video-container video-container-posture">
+                <div class="video-wrapper">
+                    <img class="screen-video" id="video" src="{{ url_for('video_feed') }}" alt="Video Feed">
+                </div>
+            </div>
+        </div>
+    </div>
+
         <div class="posture-status">
             <p id="status-text" class="status-text">로딩 중 입니다..</p>
         </div>
 
-        <div class="video-container video-container-posture">
-            <div class="video-wrapper">
-                <img id="video" src="{{ url_for('video_feed') }}" alt="Video Feed">
-            </div>
-        </div>
-        <button id="capture-button" class="btn">캡처</button>
-        <button id="recapture-button" class="btn" style="display: none;">다시 캡처 하기</button>
 
-        <div class="container3">
+        
+        
             <h2>< 자세 유지 시간 그래프 ></h2>
             <div class="grape">
 
             <canvas id="postureChart"></canvas>
             </div>
-        </div>
+        
 
         <div class="footer">
             <p>© 2024 국민대학교 멋쟁이사자처럼 팀 ETC. All rights reserved.</p>
         </div>
         <audio id="alert-sound" src="{{ url_for('static', filename='alert-sound.mp3') }}" preload="auto"></audio>
-
-    </div>
+    
+</div>
 
     <script>
 
