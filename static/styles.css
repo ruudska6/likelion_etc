@@ -193,7 +193,7 @@ nav ul li a:hover {
 }
 
 .footer {
-    margin-top: 50px;
+    margin-top: 100px;
     font-size: 16px;
     color: #7f8c8d;
     
@@ -508,7 +508,7 @@ nav ul li a:hover {
 .camcorder {
     display: flex;
     align-items: center;
-    margin-bottom: 10%;
+    margin-bottom: 13%;
 }
 
 .camcorder-body {
