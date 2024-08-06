@@ -1,7 +1,6 @@
 from flask import Flask, render_template, Response, request, jsonify
 import cv2
 import mediapipe as mp
-import os
 import time
 import numpy as np
 import absl.logging
@@ -12,9 +11,6 @@ absl.logging.set_verbosity(absl.logging.ERROR)
 
 app = Flask(__name__)
 
-camera = cv2.VideoCapture(0)
-
-#
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 pose = mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5)
@@ -31,7 +27,6 @@ def capture_landmarks(image):
     results = pose.process(image)
     if results.pose_landmarks:
         captured_landmarks = results.pose_landmarks.landmark
-
 
 def is_good_posture(landmarks, captured_landmarks):
     if not captured_landmarks:
@@ -70,47 +65,6 @@ def draw_points(image, landmarks):
         y = int(y * image.shape[0])
         cv2.circle(image, (x, y), 5, (0, 255, 0), -1)
 
-def generate_frames():
-    global bad_posture_start_time, good_posture_start_time, posture_status_data
-    while True:
-        success, frame = camera.read()
-        if not success:
-            break
-        else:
-            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            results = pose.process(image)
-
-            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-
-            good_posture = False
-            if results.pose_landmarks:
-                draw_points(image, results.pose_landmarks.landmark)
-
-                good_posture = is_good_posture(results.pose_landmarks.landmark, captured_landmarks)
-
-                if good_posture:
-                    if bad_posture_start_time is None:
-                        if good_posture_start_time is None:
-                            good_posture_start_time = time.time()
-                    else:
-                        bad_posture_start_time = None
-                        good_posture_start_time = time.time()
-                else:
-                    if bad_posture_start_time is None:
-                        bad_posture_start_time = time.time()
-                    if time.time() - bad_posture_start_time >= POSTURE_THRESHOLD_TIME:
-                        if good_posture_start_time is not None:
-                            good_posture_duration = time.time() - good_posture_start_time
-                            posture_status_data.append(good_posture_duration)
-                        # bad_posture_start_time = time.time()
-                        good_posture_start_time = None
-
-            ret, buffer = cv2.imencode('.jpg', image)
-            frame = buffer.tobytes()
-
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
-
 @app.route('/mainpage')
 def mainpage():
     return render_template('mainpage.html')
@@ -127,11 +81,6 @@ def equipment():
 def stretching():
     return render_template('stretching.html')
 
-@app.route('/video_feed')
-def video_feed():
-    return Response(generate_frames(),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
-
 @app.route('/capture', methods=['POST'])
 def capture():
     data = request.json
@@ -141,7 +90,7 @@ def capture():
     capture_landmarks(image)
     return '', 204
 
-@app.route('/posture_status')
+@app.route('/posture_status', methods=['POST'])
 def posture_status():
     global bad_posture_start_time, good_posture_start_time
     data = request.json

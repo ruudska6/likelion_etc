@@ -23,18 +23,13 @@
         <p>바른 자세를 해주세요!</p>
         <span class="close" id="popup-close">확인</span>
     </div>
-        <div class="banner" id="banner">
-            
-            
-            <img src="{{ url_for('static', filename='bareun-big.png') }}" class="bareun-big" alt="Banner Image">
-           
-            <div class="text-container">
+    <div class="banner" id="banner">
+        <img src="{{ url_for('static', filename='bareun-big.png') }}" class="bareun-big" alt="Banner Image">
+        <div class="text-container">
             <p class="main-title">자세 서비스</p>
             <p class="subtitle">당신의 척추 건강을 지켜드립니다!</p>
-            </div>
-
-            <div class="nav-subtitle"> 
-                
+        </div>
+        <div class="nav-subtitle"> 
             <nav>                
                 <ul>
                     <li><a href="{{ url_for('index') }}">자세 교정</a></li>
@@ -43,66 +38,46 @@
                     <img src="{{ url_for('static', filename='desk.png') }}" class="desk" alt="Banner Image">
                 </ul>
             </nav>
-
         </div>
     </div>
     
-<div class="container">
-    </br>
-    
-    <div class="posture-status">
-        <p id="status-text" class="status-text">로딩 중 입니다..</p>
-    </div>
-    
-    <div class="camcorder">
-
-        <div class="camcorder-body">
-            <div class="lens">
-
-
-            </div>
-            <div class="record-button">
-
-            </div>
-            <div class="camcorder-capture-button">
-                <button id="capture-button" class="btn">캡처</button>
-                <button id="recapture-button" class="btn" style="display: none;">캡처</button>
-            </div>
+    <div class="container">
+        </br>
+        <div class="posture-status">
+            <p id="status-text" class="status-text">로딩 중 입니다..</p>
         </div>
-        <div class="connect">
-
-        </div>
-        <div class="screen">
-            <div class="video-container video-container-posture">
-                <div class="video-wrapper">
-                    <img class="screen-video" id="video" src="{{ url_for('video_feed') }}" alt="Video Feed">
+        
+        <div class="camcorder">
+            <div class="camcorder-body">
+                <div class="lens"></div>
+                <div class="record-button"></div>
+                <div class="camcorder-capture-button">
+                    <button id="capture-button" class="btn">캡처</button>
+                    <button id="recapture-button" class="btn" style="display: none;">캡처</button>
+                </div>
+            </div>
+            <div class="connect"></div>
+            <div class="screen">
+                <div class="video-container video-container-posture">
+                    <div class="video-wrapper">
+                        <video id="video" autoplay></video>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
+        <h2>< 자세 유지 시간 그래프 ></h2>
+        <div class="grape">
+            <canvas id="postureChart"></canvas>
+        </div>
 
-
-
-        
-  
-    <h2>< 자세 유지 시간 그래프 ></h2>
-    <div class="grape">
-
-    <canvas id="postureChart"></canvas>
-    </div>
-
-
-    <div class="footer">
-        <p>© 2024 국민대학교 멋쟁이사자처럼 팀 ETC. All rights reserved.</p>
-    </div>
+        <div class="footer">
+            <p>© 2024 국민대학교 멋쟁이사자처럼 팀 ETC. All rights reserved.</p>
+        </div>
         <audio id="alert-sound" src="{{ url_for('static', filename='alert-sound.mp3') }}" preload="auto"></audio>
-    
-</div>
+    </div>
 
     <script>
-
-
         window.addEventListener('scroll', function() {
             const banner = document.getElementById('banner');
             if (window.scrollY > 0) {
@@ -112,8 +87,8 @@
             }
         });
 
-                // JavaScript 코드로 웹캠 스트림 시작
-                async function startVideo() {
+        // JavaScript 코드로 웹캠 스트림 시작
+        async function startVideo() {
             const video = document.getElementById('video');
             try {
                 const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -124,40 +99,51 @@
         }
 
         document.getElementById('capture-button').addEventListener('click', function() {
-            fetch('/capture', { method: 'POST' }).then(function(response) {
-                if (response.ok) {
-                    document.getElementById('status-text').innerText = '자세가 캡처되었습니다!';
-                    document.getElementById('capture-button').style.display = 'none';
-                    document.getElementById('recapture-button').style.display = 'inline-block';
-                }
+            captureImage().then(image => {
+                fetch('/capture', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: image })
+                }).then(response => {
+                    if (response.ok) {
+                        document.getElementById('status-text').innerText = '자세가 캡처되었습니다!';
+                        document.getElementById('capture-button').style.display = 'none';
+                        document.getElementById('recapture-button').style.display = 'inline-block';
+                    }
+                });
             });
         });
 
         document.getElementById('recapture-button').addEventListener('click', function() {
-            fetch('/capture', { method: 'POST' }).then(function(response) {
-                if (response.ok) {
-                    document.getElementById('status-text').innerText = '자세가 다시 캡처되었습니다!';
-                }
+            captureImage().then(image => {
+                fetch('/capture', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: image })
+                }).then(response => {
+                    if (response.ok) {
+                        document.getElementById('status-text').innerText = '자세가 다시 캡처되었습니다!';
+                    }
+                });
             });
         });
 
         let alertActive = false;
 
         function showAlert() {
-            //소리 재생
+            // 소리 재생
             const alertSound = document.getElementById('alert-sound');
             const popup = document.getElementById('popup');
             
-            if (document.readyState === 'complete'){
+            if (document.readyState === 'complete') {
                 alertSound.play().catch(error => {
-                    console.log('소리 막힘:',error);
+                    console.log('소리 막힘:', error);
                 });
             }
 
-
             popup.classList.add('show');
 
-            document.getElementById('popup-close').addEventListener('click',function(){
+            document.getElementById('popup-close').addEventListener('click', function() {
                 popup.classList.remove('show');
             });
 
@@ -165,7 +151,21 @@
             setTimeout(() => {
                 alertActive = false;
                 checkPosture(); // 다시 상태 확인 시작
-            }, 10000);  // 10초 후에 다시 상태를 확인
+            }, 10000); // 10초 후에 다시 상태를 확인
+        }
+
+        function captureImage() {
+            const video = document.getElementById('video');
+            const canvas = document.createElement('canvas');
+            const context = canvas.getContext('2d');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            return new Promise((resolve) => {
+                resolve(canvas.toDataURL('image/png').split(',')[1]); // base64 인코딩된 이미지 데이터
+            });
         }
 
         function checkPosture() {
@@ -173,23 +173,25 @@
                 return;
             }
 
-            fetch('/posture_status')
-                .then(response => response.json())
-                .then(data => {
+            captureImage().then(image => {
+                fetch('/posture_status', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ image: image })
+                }).then(response => response.json())
+                  .then(data => {
                     document.getElementById('status-text').innerText = data.status;
                     if (data.alert && !alertActive) {
                         showAlert();
                     }
                 });
+            });
         }
 
-       
         function fetchPostureData() {
             fetch('/posture_data')
                 .then(response => response.json())
-                .then(data => {
-                    updateChart(data);
-                });
+                .then(data => updateChart(data));
         }
 
         let postureChart = null;
@@ -197,7 +199,7 @@
         function updateChart(data) {
             const ctx = document.getElementById('postureChart').getContext('2d');
             
-            if (postureChart){
+            if (postureChart) {
                 postureChart.destroy();
             }
             
@@ -234,7 +236,8 @@
 
         setInterval(checkPosture, 1000);  // 1초마다 상태를 확인합니다
         
-        window.onload = function(){
+        window.onload = function() {
+            startVideo();  // 페이지 로드 시 비디오 스트림 시작
             fetchPostureData();
             setInterval(fetchPostureData, 10000);
         };
