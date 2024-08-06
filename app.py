@@ -5,6 +5,8 @@ import os
 import time
 import numpy as np
 import absl.logging
+from PIL import Image
+
 
 # 경고 메시지 줄이기
 absl.logging.set_verbosity(absl.logging.ERROR)
@@ -25,16 +27,20 @@ POSTURE_THRESHOLD_TIME = 5  # 5 seconds
 
 posture_status_data = []
 
-def capture_landmarks():
+def capture_landmarks(image=None):
     global captured_landmarks
-    success, frame = camera.read()
-    if success:
-        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        results = pose.process(image)
-        if results.pose_landmarks:
-            captured_landmarks = results.pose_landmarks.landmark
-            filename = os.path.join('static', 'capture.jpg')
-            cv2.imwrite(filename, frame)
+    if image is None:
+        success, frame = camera.read()
+        if success:
+            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    else:
+        image = cv2.cvtColor(np.array(image), cv2.COLOR_BGR2RGB)
+    
+    results = pose.process(image)
+    if results.pose_landmarks:
+        captured_landmarks = results.pose_landmarks.landmark
+        filename = os.path.join('static', 'capture.jpg')
+        cv2.imwrite(filename, cv2.cvtColor(image, cv2.COLOR_RGB2BGR))
 
 def is_good_posture(landmarks, captured_landmarks):
     if not captured_landmarks:
@@ -46,7 +52,7 @@ def is_good_posture(landmarks, captured_landmarks):
     neck_distance = abs(landmarks[neck_idx].x - captured_landmarks[neck_idx].x) + abs(landmarks[neck_idx].y - captured_landmarks[neck_idx].y)
     chin_distance = abs(landmarks[chin_idx].x - captured_landmarks[chin_idx].x) + abs(landmarks[chin_idx].y - captured_landmarks[chin_idx].y)
 
-    threshold = 0.07  # 더 민감하게 조정
+    threshold = 0.07  # Adjust sensitivity
     return neck_distance < threshold and chin_distance < threshold
 
 def draw_points(image, landmarks):
@@ -105,7 +111,6 @@ def generate_frames():
                         if good_posture_start_time is not None:
                             good_posture_duration = time.time() - good_posture_start_time
                             posture_status_data.append(good_posture_duration)
-                        # bad_posture_start_time = time.time()
                         good_posture_start_time = None
 
             ret, buffer = cv2.imencode('.jpg', image)
@@ -135,9 +140,20 @@ def video_feed():
     return Response(generate_frames(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/capture', methods=['POST'])
-def capture():
-    capture_landmarks()
+@app.route('/upload_image', methods=['POST'])
+def upload_image():
+    if 'image' not in request.files:
+        return '', 400
+
+    image_file = request.files['image']
+    image = Image.open(image_file.stream)
+
+    # Convert image to OpenCV format
+    image_np = np.array(image)
+    image_np = cv2.cvtColor(image_np, cv2.COLOR_RGB2BGR)
+
+    # Process the uploaded image
+    capture_landmarks(image_np)
     return '', 204
 
 @app.route('/posture_status')
