@@ -112,6 +112,17 @@
             }
         });
 
+                // JavaScript 코드로 웹캠 스트림 시작
+                async function startVideo() {
+            const video = document.getElementById('video');
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+            } catch (err) {
+                console.error('Error accessing the webcam', err);
+            }
+        }
+
         document.getElementById('capture-button').addEventListener('click', function() {
             fetch('/capture', { method: 'POST' }).then(function(response) {
                 if (response.ok) {
